@@ -1072,7 +1072,7 @@ end subroutine tqgpsm
 ! This subroutine returns the sublattices and constitution of a phase
 ! n1 is phase tuple index
 ! nsub is the number of sublattices (1 if no sublattices)
-! cinsub is an array with the number of const\EDtuents in each sublattice
+! cinsub is an array with the number of constituents in each sublattice
 ! spix is an array with the species index of the constituents in all sublattices
 ! sites is an array of the site ratios for all sublattices.  
 ! yfrac is the constituent fractions in same order as in spix
