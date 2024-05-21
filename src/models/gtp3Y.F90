@@ -666,7 +666,7 @@
    endif
 1100 continue
    if(ocv()) write(*,*)'3Y leaving global_gridmin'
-   write(*,*)'3Y leaving global_gridmin'
+!   write(*,*)'3Y leaving global_gridmin'
    return
  end subroutine global_gridmin
 

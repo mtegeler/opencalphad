@@ -8,7 +8,7 @@ getkey.o:
 # for MAC
 #	gcc -c -DBSD getkey.c
 # for Linux
-#	gcc -c -DLinux getkey.c
+	gcc -c -DLinux getkey.c
 # for other UNIX systems
 #	gcc -c -DG77 getkey.c
 # for CYGWIN on Windows

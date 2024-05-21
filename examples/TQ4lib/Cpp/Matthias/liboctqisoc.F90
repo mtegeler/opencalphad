@@ -46,8 +46,8 @@ module liboctqisoc
 
     TYPE, bind(c) :: c_gtp_equilibrium_data
         integer(c_int) :: status,multiuse,eqno,next
-        character(c_char) :: eqname*24
-        character(c_char) :: comment*72
+        !character(c_char) :: eqname*24
+        !character(c_char) :: comment*72
         real(c_double) :: tpval(2)
         real(c_double) :: rtn
         real(c_double) :: weight
@@ -63,7 +63,7 @@ module liboctqisoc
         real(c_double) :: xconv
         real(c_double) :: gmindif=-5.0D-2
         integer(c_int) :: maxiter
-        character(c_char) :: eqextra*80
+        !character(c_char) :: eqextra*80
         integer(c_int) :: sysmatdim=0
         integer(c_int) :: nfixmu=0
         integer(c_int) :: nfixph=0
@@ -91,6 +91,7 @@ module liboctqisoc
         type(gtp_equilibrium_data), pointer :: ceq
         !=================
         call tqini(n, ceq)
+        call tqquiet(.TRUE.)
         !=================
         c_ceq = c_loc(ceq)
     end subroutine c_tqini
@@ -170,6 +171,19 @@ module liboctqisoc
         c_ceq = c_loc(ceq)
         n = nc
     end subroutine c_tqgcom
+    
+    subroutine c_tqgcomn(n,c_ceq) bind(c, name='c_tqgcomn')
+        integer(c_int), intent(inout) :: n
+        type(c_ptr), intent(inout) :: c_ceq  
+        integer, target :: nc
+        character(len=24) :: fcomponents(maxel)
+        type(gtp_equilibrium_data), pointer :: ceq  
+        integer :: i,j,l
+        call c_f_pointer(c_ceq, ceq)
+        call tqgcom(nc, fcomponents, ceq)
+        c_ceq = c_loc(ceq)
+        n = nc
+    end subroutine c_tqgcomn
 
     subroutine c_tqgnp(n, c_ceq) bind(c, name='c_tqgnp')
         integer(c_int), intent(inout) :: n
@@ -529,5 +543,6 @@ module liboctqisoc
         !=================
         c_ceq = c_loc(ceq)
     end subroutine c_tqlc
+    
 
 end module liboctqisoc

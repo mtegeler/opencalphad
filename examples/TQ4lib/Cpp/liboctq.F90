@@ -339,6 +339,31 @@ contains
 !\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\
 
 !\begin{verbatim}
+  subroutine tqphtupsts(phtupx,newstat,val,ceq)
+! set status of phase tuple, 
+    integer phtupx,newstat
+    double precision val
+    type(gtp_equilibrium_data), pointer :: ceq  ! IN: current equilibrium
+!\end{verbatim}
+    integer n
+    if(phtupx.le.0) then
+! if tup<0 change status of all phases
+       do n=1,ntup
+          call change_phtup_status(n,newstat,val,ceq)
+          if(gx%bmperr.ne.0) goto 1000
+       enddo
+    elseif(phtupx.le.ntup) then
+       call change_phtup_status(phtupx,newstat,val,ceq)
+    else
+       write(*,*)'Illegal phase tuple index',phtupx
+       gx%bmperr=8888
+    endif
+1000 continue
+    return
+  end subroutine tqphtupsts
+
+
+!\begin{verbatim}
   subroutine tqgpsm(n,phases,status,amdgm,ceq)
 ! get all phase names and their status and amounts or DGM
     integer n
@@ -1047,7 +1072,7 @@ end subroutine tqgpsm
 ! This subroutine returns the sublattices and constitution of a phase
 ! n1 is phase tuple index
 ! nsub is the number of sublattices (1 if no sublattices)
-! cinsub is an array with the number of constítuents in each sublattice
+! cinsub is an array with the number of const\EDtuents in each sublattice
 ! spix is an array with the species index of the constituents in all sublattices
 ! sites is an array of the site ratios for all sublattices.  
 ! yfrac is the constituent fractions in same order as in spix
@@ -1088,6 +1113,36 @@ end subroutine tqgpsm
 1000 continue
     return
   end subroutine tqsphc1
+
+!\begin{verbatim}
+  subroutine Change_Status_Phase(myname,nystat,myval,ceq)
+    implicit none
+    character myname*24
+    integer nystat
+    double precision myval
+    type(gtp_equilibrium_data), pointer :: ceq 
+!\end{verbatim}	
+    integer iph,ics
+    call find_phase_by_name(myname,iph,ics)
+    call change_phase_status(iph,ics,nystat,myval,ceq)
+1000 continue	
+    return
+  end subroutine Change_Status_Phase
+  
+  !\begin{verbatim} 
+  subroutine reset_conditions(cline,ceq)
+!reset any condition on temperature  
+    implicit none
+    character cline*24
+    type(gtp_equilibrium_data), pointer :: ceq 
+!\end{verbatim}	
+    integer ip
+    ip=0
+!	write(*,*) cline
+    call set_condition(cline,ip,ceq)
+1000 continue	
+    return
+  end subroutine reset_conditions
 
 !\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\!/!!\
 

@@ -16,7 +16,7 @@ int main(int argc, char **argv)
     calls the TQ-Interface for any given thermodynamic
     database file {FILENAME}, sets conditions specified
     in this function {T}, {P}, {N} and {X[*]} and prints
-    the output of the thermodynamic equilibrium calculation.
+    the output of the thermodynamic equilibrium calculation.*/
 
     string FILENAME = "FENI.TDB";                                               // Name of the thermodynamic database file (*.TDB, *.tdb)
     int I = 1;                                                                  // Number of Phase
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     and prints the output of the thermodynamic values
     like the Gibbs energy, the partial derivative of the
     Gibbs energy with respect to every single site fraction
-    without doing a thermodyamic equilibrium calculation.*/
+    without doing a thermodyamic equilibrium calculation.
 
     string FILENAME = "steel1.TDB";                                             // Name of the thermodynamic database file (*.TDB, *.tdb)
     int I = 2;                                                                  // Number of Phase

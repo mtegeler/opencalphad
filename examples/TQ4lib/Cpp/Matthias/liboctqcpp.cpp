@@ -392,7 +392,8 @@ void liboctqcpp::reset_conditions(string condition, double newval, void * ceq)
 void liboctqcpp::Change_Status_Phase(string phname, int newstatus, double val, void * ceq)
 {
     //--------------------------------------------------
-    tqphtupsts(tqgpi(phname, ceq), newstatus, val, ceq);
+    //tqphtupsts(tqgpi(phname, ceq), newstatus, val, ceq);
+    c_Change_Status_Phase(tqgpi(phname, ceq), newstatus, val, ceq);
     //--------------------------------------------------
 };
 

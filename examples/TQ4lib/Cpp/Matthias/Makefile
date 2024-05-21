@@ -1,28 +1,26 @@
-EXE=cpptest
-LIBS=../../..
-CFLAGS=-lstdc++
-#UNCOMMENT THE NEXT LINE IF YOU WANT TO COMPILE OPENCALPHAD IN PARALLEL
-#CFLAGS+=-fopenmp
-
-#==============================================================================#
-
-#Available compilation flags: all, clean
+OBJS=liboctq.o liboctqisoc.o
+EXE=tqcpptest1
+LIBS=../..
 
 .PHONY : all clean
 
-#Compiles OpenCalphad's OCASI examples as standalone binary executable
-#software.
-
 all:
 	make $(EXE)
-
-#Removes all binary files that were created in the compiling step.
-
+	make liboctq.so
+    
 clean:
 	rm -f *.o *.mod $(EXE)
 
-#==============================================================================#
+liboctq.o:	../liboctq.F90
+	gfortran -c -fopenmp -g -fPIC -I$(LIBS) ../liboctq.F90
+
+liboctqisoc.o:	liboctqisoc.F90
+	gfortran -c -fopenmp -g -fPIC -I$(LIBS) liboctqisoc.F90
+	
+liboctq.so:  liboctq.o liboctqisoc.o
+	g++ -std=c++17 -fopenmp -shared -o liboctq.so liboctq.o liboctqisoc.o gtp3.o matsmin.o metlib4.o oclablas.o ocnum.o pmon6.o smp2.o -lgfortran 
 
 $(EXE): $(OBJS)
-	g++ -o $(EXE) $(CFLAGS) $(EXE).cpp -L$(LIBS) ../../../liboctq-isoc.a -lgfortran -lm
-	g++ -c -I../.. $(EXE).cpp
+	g++ -std=c++17 -fopenmp -o $(EXE) -lstdc++ $(EXE).cpp liboctqisoc.o liboctq.o liboceq.a getkey.o M_getkey.o -lgfortran -lm
+	#g++ -std=c++17 -fopenmp -shared -o liboctq.so liboctq.o 
+	g++ -std=c++17 -fopenmp -lstdc++ -c -I../.. $(EXE).cpp

@@ -376,7 +376,7 @@ void ListConstituentFractions(vector<string> phnames, vector<double> phfract,
     {
         if (phfract[i-1] > 0.0)
         {
-            char* statevar = "X";
+            char* statevar = (char*)"X";
             int n1 =  0;
             int n2 = -1;                                                        //composition of stable phase n2 = -1 means all fractions
             int n4 = sizeof(pxf)/sizeof(pxf[0]);
